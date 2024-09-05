@@ -1,2 +1,2 @@
 # Proxler
-A discord chatbot for Proxmox Cluster integration
+A discord bot for Proxmox Cluster integration
