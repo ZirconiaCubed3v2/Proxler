@@ -1,5 +1,7 @@
 import time
 import proxmoxer
+from dotenv import load_dotenv
+import os
 
 def cloneVM(dbcurs, api, vm, userid):
     dbcurs.execute(f"SELECT * FROM USERDATA WHERE USERID = '{userid}';")
@@ -29,8 +31,8 @@ def cloneVM(dbcurs, api, vm, userid):
     elif vm == "mint":
         vmid = 105
         pool = "linux"
-    newName = api.nodes('stargazer').qemu(vmid).config().get()["name"]
-    api.nodes('stargazer').qemu(vmid).clone().post(vmid=vmid, name=newName, target=newNode, pool=pool, node="stargazer", newid=newid)
+    newName = api.nodes(os.getenv("TEMPLATENODE")).qemu(vmid).config().get()["name"]
+    api.nodes(os.getenv("TEMPLATENODE")).qemu(vmid).clone().post(vmid=vmid, name=newName, target=newNode, pool=pool, node=os.getenv("TEMPLATENODE"), newid=newid)
     time.sleep(3)
     api.nodes(newNode).qemu(newid).config().post(args=f"-vnc 0.0.0.0:{vncport}")
     dbcurs.execute(f"INSERT INTO USERDATA VALUES ('{userid}', {newid}, {vncport}, '{newNode}');")
