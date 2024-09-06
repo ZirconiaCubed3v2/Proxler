@@ -15,6 +15,7 @@ Make a .env file with the following variables:
 - DISCORDSERVER: The name of the discord server to attach this instance of the bot to
 - DISCORDTOKEN: The token generated in the discord developer portal
 - CHANNELID: The ID of the channel you want the bot to live in
+- TEMPLATENODE: The node that contains all the OEM install templates
 
 ## Modules
 Make sure to install the modules in requirements.txt and all that good stuff
