@@ -11,6 +11,7 @@ Make a .env file with the following variables:
 - ROOTPASS: The root password of the proxmox host or cluster 'controller'
 - DISCORDSERVER: The name of the discord server to attach this instance of the bot to
 - DISCORDTOKEN: The token generated in the discord developer portal
+- CHANNELID: The ID of the channel you want the bot to live in
 
 ## Python
 Make sure to install the modules in requirements.txt and all that good stuff
