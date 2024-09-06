@@ -1,7 +1,7 @@
 # Proxler
 A discord bot for Proxmox Cluster integration
-There are only simple commands because this was made to be deployed on a server with people who don't understand technology very well
-Dynamically allocates VM ids and ports for VNC
+There are only simple commands because this was made to be deployed on a server with people who don't understand technology very well  
+Dynamically allocates VM ids and ports for VNC  
 OEM install templates of each OS should be placed on a single node, then put their vm IDs in the backend.py in the cloneVM function, with their corresponding names
 
 ## Database
