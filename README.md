@@ -13,5 +13,5 @@ Make a .env file with the following variables:
 - DISCORDTOKEN: The token generated in the discord developer portal
 - CHANNELID: The ID of the channel you want the bot to live in
 
-## Python
+## Modules
 Make sure to install the modules in requirements.txt and all that good stuff
