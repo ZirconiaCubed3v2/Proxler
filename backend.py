@@ -25,8 +25,14 @@ def cloneVM(dbcurs, api, vm, userid):
     elif vm == "win10":
         vmid = 103
         pool = "windows"
+    elif vm == "win11":
+        vmid = 107
+        pool = "windows"
     elif vm == "winserv-19":
         vmid = 102
+        pool = "winserv"
+    elif vm == "winserv-22":
+        vmid = 108
         pool = "winserv"
     elif vm == "mint":
         vmid = 105
@@ -68,12 +74,12 @@ def delVM(dbcurs, api, userid):
     except proxmoxer.core.ResourceException:
         return 10
 
-def vmstat(dbcurs, userid):
+def vmstat(dbcurs, api, userid):
     dbcurs.execute(f"SELECT * FROM USERDATA WHERE USERID = '{userid}';")
     vm = dbcurs.fetchone()
     if vm == None:
         return False
-    return [vm[1], vm[2], vm[3]]
+    return [vm[1], vm[2], vm[3], api.nodes(vm[3]).qemu(str(vm[1])).status().current().get()["status"]]
 
 def scoreNodes(api):
     nodes = {}

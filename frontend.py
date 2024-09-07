@@ -15,6 +15,7 @@ CONTROLLERADDR = os.getenv("CONTROLLERADDR")
 ROOTPASS = os.getenv("ROOTPASS")
 TOKEN = os.getenv("DISCORDTOKEN")
 SERVER = os.getenv("DISCORDSERVER")
+CHANNELID = os.getenv("CHANNELID")
 
 treknet = proxmoxer.ProxmoxAPI(CONTROLLERADDR, user="root@pam", password=ROOTPASS, verify_ssl=False)
 
@@ -29,12 +30,21 @@ async def on_ready():
     guild = discord.utils.find(lambda g: g.name == SERVER, bot.guilds)
     print(f"{bot.user} is connected to {guild.name} ({guild.id})")
 
+async def on_message(message):
+    if message.channel.id != int(CHANNELID):
+        return
+    await bot.process_commands(message)
+
 @bot.command(brief="Tests to see if bot is online and working")
 async def test(ctx):
     await ctx.send("Testing... I think it works")
 
 @bot.command(brief="Creates VM")
-async def create(ctx, arg1: str = commands.parameter(description="  |   OS for VM (win10, winserv-19, ubuntu, mint)")):
+async def create(ctx, arg1: str = commands.parameter(description="  |   OS for VM (win10, win11, winserv-19, winserv-22, ubuntu, mint)")):
+    oses = ["win10", "win11", "winserv-19", "winserv-22", "ubuntu", "mint"]
+    if not (arg1 in oses):
+        await ctx.send("Invalid OS type. Use the '/help create' command to see the options")
+        return
     newVM = cloneVM(cursor, treknet, arg1, ctx.author)
     if newVM == False:
         await ctx.send(f"You already have a vm, use the /status command to see details")
@@ -91,15 +101,20 @@ async def reset(ctx):
 
 @bot.command(brief="Shows information about VM")
 async def status(ctx):
-    vm = vmstat(cursor, ctx.author)
-    if vm == None:
+    vm = vmstat(cursor, treknet, ctx.author)
+    if vm == False:
         await ctx.send("You do not have a VM yet! Use the /create command to make one")
         return
     if vm[1] < 10:
-        await ctx.send(f"ID: {vm[0]}, VNC Port: 590{vm[1]}, Node: {vm[2]}")
+        await ctx.send(f"""ID: {vm[0]}, VNC Port: 590{vm[1]}, Node: {vm[2]}
+Connection URI: `vnc://{vm[2]}.trek.net:590{vm[1]}`
+Status: {vm[3]}""")
     else:
-        await ctx.send(f"ID: {vm[0]}, VNC Port: 59{vm[1]}, Node: {vm[2]}")
+        await ctx.send(f"""ID: {vm[0]}, VNC Port: 59{vm[1]}, Node: {vm[2]}
+Connection URI: `vnc://{vm[2]}.trek.net:59{vm[1]}`
+Status: {vm[3]}""")
 
+bot.on_message = on_message
 bot.run(TOKEN)
 
 conn.commit()
