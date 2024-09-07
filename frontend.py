@@ -81,7 +81,8 @@ async def delete(ctx, arg1: str = commands.parameter(default="Do not delete me",
         else:
             await ctx.send("Deleted VM")
     else:
-        await ctx.send("The first argument needs to be \"I want to delete it\" exactly, for accidental deletion protection")
+        await ctx.send("""The first argument needs to be \"I want to delete it\" exactly, for accidental deletion protection
+(e.g. `/delete \"I want to delete it\"`""")
 
 @bot.command(brief="Hard stops VM")
 async def stop(ctx):
