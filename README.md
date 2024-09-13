@@ -16,6 +16,7 @@ Make a .env file with the following variables:
 - DISCORDTOKEN: The token generated in the discord developer portal
 - CHANNELID: The ID of the channel you want the bot to live in
 - TEMPLATENODE: The node that contains all the OEM install templates
+- ADMIN: The user id of the 'administrator', for using admin commands to manage other users' VMs
 
 ## Modules
 Make sure to install the modules in requirements.txt and all that good stuff
