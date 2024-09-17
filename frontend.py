@@ -57,8 +57,8 @@ async def create(ctx, arg1: str = commands.parameter(description="  |   OS for V
 
 @bot.command()
 async def acreate(ctx, arg1, arg2):
-    if ctx.author != ADMIN:
-        ctx.send("You do not have permission to run this command")
+    if ctx.author.name != ADMIN:
+        await ctx.send("You do not have permission to run this command")
         return
     oses = ["win10", "win11", "winserv-19", "winserv-22", "ubuntu", "mint"]
     if not (arg1 in oses):
@@ -83,8 +83,8 @@ async def shutdown(ctx):
 
 @bot.command()
 async def ashutdown(ctx, arg1):
-    if ctx.author != ADMIN:
-        ctx.send("You do not have permission to run this command")
+    if ctx.author.name != ADMIN:
+        await ctx.send("You do not have permission to run this command")
         return
     stat = powerVM(cursor, treknet, arg1, "shutdown")
     if stat == False:
@@ -101,9 +101,9 @@ async def start(ctx):
         await ctx.send(f"Started VM")
 
 @bot.command()
-async def start(ctx, arg1):
-    if ctx.author != ADMIN:
-        ctx.send("You do not have permission to run this command")
+async def astart(ctx, arg1):
+    if ctx.author.name != ADMIN:
+        await ctx.send("You do not have permission to run this command")
         return
     stat = powerVM(cursor, treknet, arg1, "start")
     if stat == False:
@@ -127,8 +127,8 @@ async def delete(ctx, arg1: str = commands.parameter(default="Do not delete me",
 
 @bot.command()
 async def adelete(ctx, arg1, arg2):
-    if ctx.author != ADMIN:
-        ctx.send("You do not have permission to run this command")
+    if ctx.author.name != ADMIN:
+        await ctx.send("You do not have permission to run this command")
         return
     if arg1 == "I want to delete it":
         stat = delVM(cursor, treknet, arg2)
@@ -151,7 +151,7 @@ async def stop(ctx):
 
 @bot.command()
 async def astop(ctx, arg1):
-    if ctx.author != ADMIN:
+    if ctx.author.name != ADMIN:
         await ctx.send("You do not have permission to run this command")
         return
     stat = powerVM(cursor, treknet, arg2, "stop")
@@ -170,7 +170,7 @@ async def reset(ctx):
 
 @bot.command()
 async def areset(ctx, arg1):
-    if ctx.author != ADMIN:
+    if ctx.author.name != ADMIN:
         await ctx.send("You do not have permission to run this command")
         return
     stat = powerVM(cursor, treknet, arg1, "reset")
@@ -195,8 +195,8 @@ Connection URI: `vnc://{vm[2]}.trek.net:59{vm[1]}`
 Status: {vm[3]}""")
 
 @bot.command()
-async dev astatus(ctx, arg1):
-    if ctx.author != ADMIN:
+async def astatus(ctx, arg1):
+    if ctx.author.name != ADMIN:
         await ctx.send("You do not have permission to run this command")
         return
     vm = vmstat(cursor, treknet, arg1)
@@ -205,16 +205,16 @@ async dev astatus(ctx, arg1):
         return
     if vm[1] < 10:
         await ctx.send(f"""ID: {vm[0]}, VNC Port: 590{vm[1]}, Node: {vm[2]}
-Connection URI: `vnc://{vm[2].trek.net:590{vm[1]}`
+Connection URI: `vnc://{vm[2]}.trek.net:590{vm[1]}`
 Status: {vm[3]}""")
     else:
         await ctx.send(f"""ID: {vm[0]}, VNC Port: 59{vm[1]}, Node: {vm[2]}
-Connection URI: `vnc://{vm[2].trek.net:59{vm[1]}`
+Connection URI: `vnc://{vm[2]}.trek.net:59{vm[1]}`
 Status: {vm[3]}""")
 
 bot.on_message = on_message
 bot.run(TOKEN)
 
 conn.commit()
-conn.close():wq
+conn.close()
 
